@@ -5,7 +5,7 @@ import sys
 from random import choice
 
 import pygame
-
+from code.EntityMediator import EntityMediator
 from pygame import Surface, Rect
 from pygame.font import Font
 from pygame.examples.grid import WINDOW_HEIGHT
@@ -13,6 +13,8 @@ from pygame.examples.grid import WINDOW_HEIGHT
 from code.Const import COLOR_WHITE, WIN_HEIGHT, COLOR_BLACK, TIMEOUT_LEVEL, MENU_OPTION, EVENT_ENEMY
 from code.Entity import Entity
 from code.EntityFactory import EntityFactory
+from code.Player import  Player
+from code.Enemy import Enemy
 
 
 class Level:
@@ -33,17 +35,23 @@ class Level:
         clock = pygame.time.Clock()
 
         while True:
-            clock.tick(120)
+            clock.tick(60)
 
             for ent in self.entity_list:
                 self.window.blit(source=ent.surf, dest=ent.rect)
                 ent.move()
+                if isinstance(ent, (Player, Enemy)):
+                    shoot = ent.shoot()
+                    if shoot is not None:
+                        self.entity_list.append(shoot)
 
                 # printed text
             self.level_text(14, f'{self.name} - Timeout: {self.timeout / 1000:.1f}s', COLOR_BLACK, (10, 5))
             self.level_text(14, f'fps: {clock.get_fps():.0f}', COLOR_BLACK, (10, WIN_HEIGHT - 35))
             self.level_text(14, f'entidades: {len(self.entity_list)}', COLOR_BLACK, (10, WINDOW_HEIGHT - 20))
             pygame.display.flip()
+            EntityMediator.verify_collision(entity_list=self.entity_list)
+            EntityMediator.verify_health(entity_list=self.entity_list)
 
 
             for event in pygame.event.get():
