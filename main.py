@@ -1,4 +1,5 @@
 from code.Game import Game
 
 game = Game()
-game.run()
+player_score = [0,0]
+game.run(player_score)
