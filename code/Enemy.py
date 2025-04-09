@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from code.Const import ENTITY_SPEED, WIN_WIDTH, ENTITY_SHOT_DELAY
+from code.Const import ENTITY_SPEED, WIN_WIDTH, ENTITY_SHOT_DELAY, ENEMY_POINTS
 from code.Entity import Entity
 from code.EnemyShot import EnemyShot
 
@@ -8,7 +8,7 @@ class Enemy(Entity):
     def __init__(self, name: str, position: tuple):
         super().__init__(name,position)
         self.shot_delay = ENTITY_SHOT_DELAY[name]
-
+        self.points = ENEMY_POINTS[name]
     def move(self, ):
         self.rect.centerx -= ENTITY_SPEED[self.name]
 

@@ -10,7 +10,8 @@ from pygame import Surface, Rect
 from pygame.font import Font
 from pygame.examples.grid import WINDOW_HEIGHT
 
-from code.Const import COLOR_WHITE, WIN_HEIGHT, COLOR_BLACK, TIMEOUT_LEVEL, MENU_OPTION, EVENT_ENEMY
+from code.Const import COLOR_WHITE, WIN_HEIGHT, COLOR_BLACK, TIMEOUT_LEVEL, MENU_OPTION, EVENT_ENEMY, COLOR_GREEN, \
+    COLOR_CYAN
 from code.Entity import Entity
 from code.EntityFactory import EntityFactory
 from code.Player import  Player
@@ -44,8 +45,14 @@ class Level:
                     shoot = ent.shoot()
                     if shoot is not None:
                         self.entity_list.append(shoot)
+                if ent.name == 'Player1':
+                    self.level_text(14, f'Player1 - Health: {ent.health} | Score: {ent.score}', COLOR_GREEN, (10,25))
+                if ent.name == 'Player2':
+                    self.level_text(14, f'Player2 - Health: {ent.health} | Score: {ent.score}', COLOR_CYAN, (10,45))
 
-                # printed text
+
+
+            # printed text
             self.level_text(14, f'{self.name} - Timeout: {self.timeout / 1000:.1f}s', COLOR_BLACK, (10, 5))
             self.level_text(14, f'fps: {clock.get_fps():.0f}', COLOR_BLACK, (10, WIN_HEIGHT - 35))
             self.level_text(14, f'entidades: {len(self.entity_list)}', COLOR_BLACK, (10, WINDOW_HEIGHT - 20))
@@ -61,7 +68,6 @@ class Level:
                 if event.type == EVENT_ENEMY:
                     choice = random.choice(('Enemy1', 'Enemy2'))
                     self.entity_list.append(EntityFactory.get_entity(choice))
-
 
     def level_text(self, text_size: int, text: str, text_color: tuple, text_pos: tuple):
         text_font: Font = pygame.font.SysFont(name="Comic Sans MS", size=text_size)
