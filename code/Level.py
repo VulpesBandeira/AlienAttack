@@ -26,6 +26,7 @@ class Level:
         self.game_mode = game_mode
         self.entity_list: list[Entity] = []
         self.entity_list.extend(EntityFactory.get_entity(self.name + 'Bg'))
+
         player = EntityFactory.get_entity('Player1')
         player.score = player_score[0]
         self.entity_list.append(player)
